@@ -7,7 +7,7 @@
         <div class="well">
 
             <div style="padding-top: 5px; padding-bottom: 5px" class="text-center">
-            <button class="btn btn-default" v-on:click="shuffleUpAndDeal(DECK_API,5)">Shuffle Up and Deal</button>&nbsp;&nbsp;<button class="btn btn-default" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Draw {{discards.length}}</button>
+            <button class="btn btn-default" v-on:click="shuffleUpAndDeal(DECK_API,5)">Shuffle Up and Deal</button>&nbsp;&nbsp;<button class="btn btn-default" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
              Discard Index: {{discards}} | Cards left: {{cardsLeft}} | Coins: {{coins}} | Draws: {{numberOfDraws}}
           </div>
           </div>
@@ -72,6 +72,8 @@ export default {
         shuffleUpAndDeal: function(deck_api, draw) {
             this.discards = []
             this.numberOfDraws = 0
+            this.coins = this.coins - this.coins_per_bet
+            this.coins_won = 0
             const shuffle_api = deck_api + 'draw/?count=52'
             const CARDS_TO_START = 5
 
@@ -118,7 +120,7 @@ export default {
             console.log('Cards left: ', this.deck.cards.length)
             this.numberOfDraws = this.numberOfDraws + 1
 
-            // this.coins = this.coins - this.coins_per_bet
+
             this.evaluate(this.hand)
             this.cardsLeft = this.deck.cards.length
         },
@@ -210,7 +212,11 @@ export default {
             console.log('Values: ',arrayValues)
             let myHand = rankPokerHand(arrayValues, arraySuits);
             this.evaluatedHand = myHand.evaluatedHand
-            this.coins_won = this.coins_per_bet * myHand.coins_won
+
+
+              this.coins_won = this.coins_per_bet * myHand.coins_won
+              this.coins = this.coins + this.coins_won
+
         },
         showWinnings: function () {
           if (this.numberOfDraws > 1) {
