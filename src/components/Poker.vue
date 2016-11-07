@@ -7,26 +7,36 @@
         <div class="well">
 
             <div style="padding-top: 5px; padding-bottom: 5px" class="text-center">
-            <button class="btn btn-default" v-on:click="shuffleUpAndDeal(DECK_API,5)">Shuffle Up and Deal</button>&nbsp;&nbsp;<button class="btn btn-default" v-on:click="draw(discards.length)">Draw {{discards.length}}</button>
-             Discard Index: {{discards}} | Phase: {{phase}} | Cards left: {{deck.cards.length}}
+            <button class="btn btn-default" v-on:click="shuffleUpAndDeal(DECK_API,5)">Shuffle Up and Deal</button>&nbsp;&nbsp;<button class="btn btn-default" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Draw {{discards.length}}</button>
+             Discard Index: {{discards}} | Cards left: {{cardsLeft}} | Coins: {{coins}} | Draws: {{numberOfDraws}}
           </div>
           </div>
         </div>
 
 
-        <div class="text-center" style="margin-top: 50px; margin-bottom: 50px;"><h3>{{evaluatedHand}}</h3></div>
+        <div class="text-center" style="margin-top: 30px"><h3>{{evaluatedHand}}</h3></div>
 
         <span class="col-md-12 text-center">
 
           <span v-for="(card, index) in hand" v-on:click="checkForDiscard(index)" style="display: inline-block;padding-right: 20px;">
-              <span v-if="showDiscardLabel(index)"><strong>DISCARD</strong></span>
+              <span v-if="showDiscardLabel(index)">DISCARD</span>
             <br>
-            <img :src="localImagePath + card.code + localImageExt" height="200" class="discard">
+            <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index)}">
 
 
           </span>
 
         </span>
+
+
+        <div>&nbsp;</div>
+
+        <div v-if="showWinnings(numberOfDraws)">
+        <div style="padding-top: 50px">
+          <div class="text-center">Coins bet: {{coins_per_bet}} | Coins won: {{coins_won}}</div>
+        </div>
+      </div>
+
 
 
 
@@ -61,7 +71,7 @@ export default {
     methods: {
         shuffleUpAndDeal: function(deck_api, draw) {
             this.discards = []
-            this.phase = 0
+            this.numberOfDraws = 0
             const shuffle_api = deck_api + 'draw/?count=52'
             const CARDS_TO_START = 5
 
@@ -73,19 +83,21 @@ export default {
                 console.log(msg)
                 this.status.push(msg);
                 this.draw(CARDS_TO_START)
-                this.phase = 1
+
             })
 
 
         },
         draw: function(cardsToDraw) {
-            console.log('Phase: ', this.phase)
+
+            console.log('Number of draws: ', this.numberOfDraws)
             if (this.deck.cards.length >= cardsToDraw) {
-                if (this.phase === 0) {
+                if (this.numberOfDraws === 0) {
                     // Initial phase: Draw 5 cards.
                     console.log('Initial phase: Draw 5 cards')
                     this.hand = this.deck.cards.slice(0, cardsToDraw)
                     this.deck.cards.splice(0, cardsToDraw)
+
 
                 } else {
                     // Drawing phase: Replace discards with drawn cards
@@ -97,17 +109,48 @@ export default {
                     // Remove drawn cards from deck
                     this.deck.cards.splice(0, cardsToDraw)
                     this.discards = []
+
+
                 }
             } else {
                 console.log('No more cards to draw.')
             }
             console.log('Cards left: ', this.deck.cards.length)
+            this.numberOfDraws = this.numberOfDraws + 1
+
+            // this.coins = this.coins - this.coins_per_bet
             this.evaluate(this.hand)
+            this.cardsLeft = this.deck.cards.length
         },
         evaluate: function() {
-            const hands = ["4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card",
-                "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"
+
+            const hands = [
+            "4 of a Kind",
+             "Straight Flush",
+             "Straight",
+             "Flush",
+             "High Card",
+              "1 Pair",
+              "2 Pair",
+              "Royal Flush",
+              "3 of a Kind",
+              "Full House"
             ];
+
+            const payout = [
+              25,     // 4 of a kind
+              50,     // Straight flush
+              4,      // Straight
+              6,      // Flush
+              0,      // High card
+              1,      // Pair
+              2,      // Two pair
+              976,    // Royal Flush
+              3,      // 3 of a kind
+              9       // Full house
+
+            ]
+
             const
                 A = 14,
                 K = 13,
@@ -145,8 +188,11 @@ export default {
                 v -= (ss[0] == (ss[1] | ss[2] | ss[3] | ss[4])) * ((s == 0x7c00) ? -5 : 1);
                 //console.log("Hand: " + hands[v] + (s == 0x403c ? " (Ace low)" : "") + "<br/>");
                 let evaluatedHand = hands[v] + (s == 0x403c ? " (Ace low)" : "");
-                console.log(evaluatedHand)
-                return evaluatedHand
+                console.log('Payout: ',payout[v])
+                return {
+                          evaluatedHand: evaluatedHand,
+                          coins_won: payout[v]
+                        }
 
 
             }
@@ -158,14 +204,20 @@ export default {
               arraySuits.push(suits[this.hand[i].suit]);
               arrayValues.push(conversion[this.hand[i].value]);
 
-
             }
-            // let arrayValue=[A, J, 3, A, A];
-            // arraySuits=[suits["DIAMONDS"], suits["SPADES"], suits["HEARTS"], suits["CLUBS"], suits["SPADES"]];
+
             console.log('Suits: ',arraySuits)
             console.log('Values: ',arrayValues)
             let myHand = rankPokerHand(arrayValues, arraySuits);
-            this.evaluatedHand = myHand
+            this.evaluatedHand = myHand.evaluatedHand
+            this.coins_won = this.coins_per_bet * myHand.coins_won
+        },
+        showWinnings: function () {
+          if (this.numberOfDraws > 1) {
+            return true
+          } else {
+            return false
+          }
         },
         checkForDiscard: function(cardIndex) {
 
@@ -202,8 +254,13 @@ export default {
             cardsToDraw: 5,
             discards: [],
             codedHand: [],
-            phase: 0,
-            evaluatedHand: ''
+            numberOfDraws: 0,
+            evaluatedHand: '',
+            cardsLeft: '',
+            coins: 1000,
+            payout: '',
+            coins_per_bet: 5,
+            coins_won: ''
 
 
         }
@@ -215,5 +272,5 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-/*.discard {opacity: .3}*/
+.discard {opacity: .4}
 </style>
