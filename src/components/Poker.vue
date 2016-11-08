@@ -35,8 +35,15 @@
            <p class="well" style="margin-top: 35px">
              {{ hand }}
            </p> -->
+           <div class="text-center" style="margin-top: 20px">
+
+            <p style="font-weight: 700">Note: Please diable Adblock or Adblock Plus (otherwise Ace of Diamonds -- AD.png -- won't display!)</p>
+
+          </div>
 
            <div class="text-center" style="padding: 30px"><a href="https://github.com/cschweda/vuepoker01">Github</a></div>
+
+
      </div>
   </div>
 </template>
