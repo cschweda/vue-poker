@@ -61,6 +61,11 @@ var webpackConfig = merge(baseWebpackConfig, {
        { from: '.htaccess', to: './' },
    ]),
 
+   // Required for Heroku deployment
+   new CopyWebpackPlugin([
+       { from: 'index.php', to: './' },
+   ]),
+
     new webpack.optimize.OccurenceOrderPlugin(),
     // extract css into its own file
     new ExtractTextPlugin(utils.assetsPath('css/[name].[contenthash].css')),
