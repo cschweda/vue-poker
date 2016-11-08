@@ -1,7 +1,7 @@
 {
-	"name": "vuetemplate02",
+	"name": "Video Poker Demo with VueJS",
 	"version": "1.0.0",
-	"description": "A Vue.js project",
+	"description": "Video Poker Demo with VueJS",
 	"author": "cschweda <cschweda@gmail.com>",
 	"scripts": {
 		"dev": "node build/dev-server.js",
