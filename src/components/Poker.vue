@@ -36,7 +36,7 @@
              {{ hand }}
            </p> -->
 
-           <div class="text-center" style="padding: 30px"><a href="https://github.com/cschweda/vuepoker01">Source on Github</a></div>
+           <div class="text-center" style="padding: 30px"><a href="https://github.com/cschweda/vuepoker01">Github</a></div>
      </div>
   </div>
 </template>
