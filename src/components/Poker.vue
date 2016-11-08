@@ -1,58 +1,36 @@
 <template>
   <div class="poker">
-
-
-      <div class="container">
+     <div class="container">
         <div class="col-md-12">
-        <div class="well">
-
-            <div style="padding-top: 5px; padding-bottom: 5px" class="text-center">
-            <button class="btn btn-default" v-on:click="shuffleUpAndDeal(DECK_API,5)">Shuffle Up and Deal</button>&nbsp;&nbsp;<button class="btn btn-default" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
-             Discard Index: {{discards}} | Cards left: {{cardsLeft}} | Coins: {{coins}} | Draws: {{numberOfDraws}}
-          </div>
-          </div>
+           <div class="well">
+              <div style="padding-top: 5px; padding-bottom: 5px" class="text-center">
+                 <button class="btn btn-default" v-on:click="shuffleUpAndDeal(DECK_API,5)">Shuffle Up and Deal</button>&nbsp;&nbsp;
+                 <button class="btn btn-default" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
+                 Discard Index: {{discards}} | Cards left: {{cardsLeft}} | Coins: {{coins}} | Draws: {{numberOfDraws}}
+              </div>
+           </div>
         </div>
-
-
-        <div class="text-center" style="margin-top: 30px"><h3>{{evaluatedHand}}</h3></div>
-
+        <div class="text-center" style="margin-top: 30px">
+           <h3>{{evaluatedHand}}</h3>
+        </div>
         <span class="col-md-12 text-center">
-
-          <span v-for="(card, index) in hand" v-on:click="checkForDiscard(index)" style="display: inline-block;padding-right: 20px;">
-              <span v-if="showDiscardLabel(index)">DISCARD</span>
-            <br>
-            <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index)}">
-
-
-          </span>
-
+        <span v-for="(card, index) in hand" v-on:click="checkForDiscard(index)" style="display: inline-block;padding-right: 20px;">
+        <span v-if="showDiscardLabel(index)">DISCARD</span>
+        <br>
+        <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index)}">
         </span>
-
-
+        </span>
         <div>&nbsp;</div>
-
         <div v-if="showWinnings(numberOfDraws)">
-        <div style="padding-top: 50px">
-          <div class="text-center">Coins bet: {{coins_per_bet}} | Coins won: {{coins_won}}</div>
+           <div style="padding-top: 50px">
+              <div class="text-center">Coins bet: {{coins_per_bet}} | Coins won: {{coins_won}}</div>
+           </div>
         </div>
-      </div>
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div style="clear: both"></div>
-    <p class="well" style="margin-top: 35px">
-      {{ hand }}
-    </p> -->
-</div>
+        <!-- <div style="clear: both"></div>
+           <p class="well" style="margin-top: 35px">
+             {{ hand }}
+           </p> -->
+     </div>
   </div>
 </template>
 
@@ -137,9 +115,9 @@ export default {
               "Royal Flush",
               "3 of a Kind",
               "Full House"
-            ];
+            ],
 
-            const payout = [
+            payout = [
               25,     // 4 of a kind
               50,     // Straight flush
               4,      // Straight
@@ -151,9 +129,9 @@ export default {
               3,      // 3 of a kind
               9       // Full house
 
-            ]
+            ],
 
-            const
+
                 A = 14,
                 K = 13,
                 Q = 12,
@@ -213,9 +191,11 @@ export default {
             let myHand = rankPokerHand(arrayValues, arraySuits);
             this.evaluatedHand = myHand.evaluatedHand
 
-
-              this.coins_won = this.coins_per_bet * myHand.coins_won
+              //
+            this.coins_won = this.coins_per_bet * myHand.coins_won
+            if (this.numberOfDraws > 1) {
               this.coins = this.coins + this.coins_won
+            }
 
         },
         showWinnings: function () {
@@ -267,8 +247,6 @@ export default {
             payout: '',
             coins_per_bet: 5,
             coins_won: ''
-
-
         }
     },
 
