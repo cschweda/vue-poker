@@ -37,7 +37,6 @@
 <script>
 export default {
     name: 'Poker',
-
     mounted: function() {
         this.status.push('App mounted.')
             // shuffle deck
@@ -87,6 +86,8 @@ export default {
             this.cardsLeft = this.deck.cards.length
         },
         evaluate: function() {
+
+          //http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
             const hands = [
               "4 of a Kind",
               "Straight Flush",
@@ -138,7 +139,7 @@ export default {
             }
             //Calculates the Rank of a 5 card Poker hand using bit manipulations.
             function rankPokerHand(cs, ss) {
-                var v, i, o, s = 1 << cs[0] | 1 << cs[1] | 1 << cs[2] | 1 << cs[3] | 1 << cs[4];
+                let v, i, o, s = 1 << cs[0] | 1 << cs[1] | 1 << cs[2] | 1 << cs[3] | 1 << cs[4];
                 for (i = -1, v = o = 0; i < 5; i++, o = Math.pow(2, cs[i] * 4)) {
                     v += o * ((v / o & 15) + 1);
                 }
