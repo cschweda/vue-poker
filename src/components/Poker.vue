@@ -44,7 +44,7 @@
            </p> -->
 
 
-           <div class="text-center" style="padding: 30px"><a href="https://github.com/cschweda/vuepoker01">Github</a></div>
+           <div class="text-center" style="padding: 30px"><a href="https://github.com/cschweda/vuepoker01">Github Source</a>&nbsp;|&nbsp;<a href="https://vuejs.org/">Vue.js</a></div>
 
 
      </div>
