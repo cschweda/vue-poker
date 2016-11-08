@@ -16,7 +16,6 @@ export default {
   name: 'App',
   data () {
     return {
-
     }
   },
   components: {
@@ -28,7 +27,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>
