@@ -42,9 +42,6 @@ export default {
         this.status.push('App mounted.')
             // shuffle deck
         this.shuffleUpAndDeal(this.DECK_API, 5)
-
-
-
     },
     methods: {
         shuffleUpAndDeal: function(deck_api, draw) {
@@ -54,22 +51,15 @@ export default {
             this.coins_won = 0
             const shuffle_api = deck_api + 'draw/?count=52'
             const CARDS_TO_START = 5
-
             this.axios.get(shuffle_api).then((response) => {
-
                 this.deck = response.data
                 let msg = 'Shuffled and deck array created.'
-
                 console.log(msg)
                 this.status.push(msg);
                 this.draw(CARDS_TO_START)
-
             })
-
-
         },
         draw: function(cardsToDraw) {
-
             console.log('Number of draws: ', this.numberOfDraws)
             if (this.deck.cards.length >= cardsToDraw) {
                 if (this.numberOfDraws === 0) {
@@ -77,8 +67,6 @@ export default {
                     console.log('Initial phase: Draw 5 cards')
                     this.hand = this.deck.cards.slice(0, cardsToDraw)
                     this.deck.cards.splice(0, cardsToDraw)
-
-
                 } else {
                     // Drawing phase: Replace discards with drawn cards
                     console.log('Drawing phase: Replace discards with drawn cards')
@@ -89,34 +77,28 @@ export default {
                     // Remove drawn cards from deck
                     this.deck.cards.splice(0, cardsToDraw)
                     this.discards = []
-
-
                 }
             } else {
                 console.log('No more cards to draw.')
             }
             console.log('Cards left: ', this.deck.cards.length)
             this.numberOfDraws = this.numberOfDraws + 1
-
-
             this.evaluate(this.hand)
             this.cardsLeft = this.deck.cards.length
         },
         evaluate: function() {
-
             const hands = [
-            "4 of a Kind",
-             "Straight Flush",
-             "Straight",
-             "Flush",
-             "High Card",
+              "4 of a Kind",
+              "Straight Flush",
+              "Straight",
+              "Flush",
+              "High Card",
               "1 Pair",
               "2 Pair",
               "Royal Flush",
               "3 of a Kind",
               "Full House"
             ],
-
             payout = [
               25,     // 4 of a kind
               50,     // Straight flush
@@ -128,36 +110,32 @@ export default {
               976,    // Royal Flush
               3,      // 3 of a kind
               9       // Full house
-
             ],
-
-
-                A = 14,
-                K = 13,
-                Q = 12,
-                J = 11,
-                suits = {
-                    "SPADES": 1,
-                    "CLUBS": 2,
-                    "HEARTS": 4,
-                    "DIAMONDS": 8
-                },
-                conversion = {
-                  "ACE" : 14,
-                  "KING": 13,
-                  "QUEEN" : 12,
-                  "JACK" : 11,
-                  "10": 10,
-                  "9": 9,
-                  "8": 8,
-                  "7": 7,
-                  "6": 6,
-                  "5": 5,
-                  "4": 4,
-                  "3": 3,
-                  "2": 2
-                                  }
-
+            A = 14,
+            K = 13,
+            Q = 12,
+            J = 11,
+            suits = {
+              "SPADES": 1,
+              "CLUBS": 2,
+              "HEARTS": 4,
+              "DIAMONDS": 8
+            },
+            conversion = {
+              "ACE" : 14,
+              "KING": 13,
+              "QUEEN" : 12,
+              "JACK" : 11,
+              "10": 10,
+              "9": 9,
+              "8": 8,
+              "7": 7,
+              "6": 6,
+              "5": 5,
+              "4": 4,
+              "3": 3,
+              "2": 2
+            }
             //Calculates the Rank of a 5 card Poker hand using bit manipulations.
             function rankPokerHand(cs, ss) {
                 var v, i, o, s = 1 << cs[0] | 1 << cs[1] | 1 << cs[2] | 1 << cs[3] | 1 << cs[4];
@@ -173,10 +151,7 @@ export default {
                           evaluatedHand: evaluatedHand,
                           coins_won: payout[v]
                         }
-
-
             }
-
             let arraySuits = [];
             let arrayValues = [];
             for (let i = 0; i<this.hand.length; i++) {
