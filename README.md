@@ -1,4 +1,4 @@
-# vuetemplate02
+# Video Poker Demo with VueJS
 
 > A Vue.js project
 
