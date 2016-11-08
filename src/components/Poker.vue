@@ -6,7 +6,9 @@
               <div style="padding-top: 5px; padding-bottom: 5px;" class="text-center">
                  <button class="btn btn-primary" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal</button>&nbsp;&nbsp;
                  <button class="btn btn-primary" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
-                 Discard Index: {{discards}} | Cards left: {{cardsLeft}} | Coins: {{coins}} | Draws: {{numberOfDraws}}
+                <div style="margin-top: 15px; font-weight: 700">
+                 Discard Index: {{discards}} | Cards left: {{cardsLeft}} |  Draws: {{numberOfDraws}}
+               </div>
               </div>
            </div>
         </div>
@@ -15,16 +17,16 @@
         <span v-for="(card, index) in hand" v-on:click="checkForDiscard(index)" style="display: inline-block;padding-right: 20px;">
         <span v-if="showDiscardLabel(index)"><span style="background: #000; color: #fff; padding: 8px;">DISCARD</span></span>
         <br><br><br>
-        <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand }">
+        <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand, handFinished: !startOfHand }">
         </span>
         <div class="text-center well" style="margin-top: 50px;">
            <h3>{{evaluatedHand}}</h3>
         </div>
         </span>
         <div>&nbsp;</div>
-        <div v-if="showWinnings(numberOfDraws)">
-           <div style="padding-top: 50px">
-              <div class="text-center">Coins bet: {{coins_per_bet}} | Coins won: {{coins_won}}</div>
+        <div>
+           <div style="padding-top: 10px">
+              <div class="text-center" style="font-size: 16px; font-weight: 700">Coins: {{coins}} | Coins bet: {{coins_per_bet}} | Coins won: {{coins_won}}</div>
            </div>
         </div>
         <!-- <div style="clear: both"></div>
@@ -50,6 +52,7 @@ export default {
             this.numberOfDraws = 0
             this.startOfHand = true
             this.coins = this.coins - this.coins_per_bet
+
             this.coins_won = 0
             const shuffle_api = deck_api + 'draw/?count=52'
             const CARDS_TO_START = 5
@@ -182,6 +185,7 @@ export default {
             if (this.numberOfDraws > 1) {
               this.coins = this.coins + this.coins_won
               this.disableShuffle = !this.disableShuffle
+              this.handFinished = !this.handFinished;
             }
 
         },
@@ -236,7 +240,8 @@ export default {
             coins_per_bet: 5,
             coins_won: '',
             disableShuffle: true,
-            startOfHand: true
+            startOfHand: true,
+
         }
     },
 
@@ -247,4 +252,5 @@ export default {
 <style>
 .card:hover {cursor: pointer; cursor: hand; opacity: .3}
 .discard {opacity: .3}
+.handFinished {opacity: .7}
 </style>
