@@ -4,8 +4,8 @@
         <div class="col-md-12">
            <div class="well">
               <div style="padding-top: 5px; padding-bottom: 5px" class="text-center">
-                 <button class="btn btn-default" v-on:click="shuffleUpAndDeal(DECK_API,5)">Shuffle Up and Deal</button>&nbsp;&nbsp;
-                 <button class="btn btn-default" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
+                 <button class="btn btn-primary" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal</button>&nbsp;&nbsp;
+                 <button class="btn btn-primary" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
                  Discard Index: {{discards}} | Cards left: {{cardsLeft}} | Coins: {{coins}} | Draws: {{numberOfDraws}}
               </div>
            </div>
@@ -44,21 +44,27 @@ export default {
     },
     methods: {
         shuffleUpAndDeal: function(deck_api, draw) {
+          if (this.disableShuffle) {
             this.discards = []
             this.numberOfDraws = 0
+
             this.coins = this.coins - this.coins_per_bet
             this.coins_won = 0
             const shuffle_api = deck_api + 'draw/?count=52'
             const CARDS_TO_START = 5
+            this.disableShuffle = true
             this.axios.get(shuffle_api).then((response) => {
                 this.deck = response.data
                 let msg = 'Shuffled and deck array created.'
                 console.log(msg)
                 this.status.push(msg);
                 this.draw(CARDS_TO_START)
+                this.disableShuffle = !this.disableShuffle
             })
+          }
         },
         draw: function(cardsToDraw) {
+
           if (this.numberOfDraws <= 1) {
             console.log('Number of draws: ', this.numberOfDraws)
             if (this.deck.cards.length >= cardsToDraw) {
@@ -173,6 +179,7 @@ export default {
             this.coins_won = this.coins_per_bet * myHand.coins_won
             if (this.numberOfDraws > 1) {
               this.coins = this.coins + this.coins_won
+              this.disableShuffle = !this.disableShuffle
             }
 
         },
@@ -225,7 +232,8 @@ export default {
             coins: 1000,
             payout: '',
             coins_per_bet: 5,
-            coins_won: ''
+            coins_won: '',
+            disableShuffle: true
         }
     },
 
