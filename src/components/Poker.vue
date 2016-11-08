@@ -252,5 +252,5 @@ export default {
 <style>
 .card:hover {cursor: pointer; cursor: hand; opacity: .3}
 .discard {opacity: .3}
-.handFinished {opacity: .7}
+.handFinished {opacity: .3}
 </style>
