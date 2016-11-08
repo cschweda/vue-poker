@@ -231,7 +231,6 @@ export default {
             localImageExt: '.png',
             cardsToDraw: 5,
             discards: [],
-            codedHand: [],
             numberOfDraws: 0,
             evaluatedHand: '',
             cardsLeft: '',

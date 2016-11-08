@@ -25,6 +25,17 @@ window._ = lodash;
 
 
 /* ============
+ * Animate.css
+ * ============
+ *
+ * Require lodash
+ *
+ *
+ */
+
+require('animate.css/animate.css');
+
+/* ============
  * Bootstrap
  * ============
  *
