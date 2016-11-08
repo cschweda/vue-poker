@@ -43,7 +43,7 @@ require('animate.css/animate.css');
  *
  * http://getbootstrap.com/
  */
-// require('bootstrap');
+require('bootstrap/dist/js/bootstrap.js');
 require('bootstrap/less/bootstrap.less');
 
 
