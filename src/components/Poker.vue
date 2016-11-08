@@ -59,6 +59,7 @@ export default {
             })
         },
         draw: function(cardsToDraw) {
+          if (this.numberOfDraws <= 1) {
             console.log('Number of draws: ', this.numberOfDraws)
             if (this.deck.cards.length >= cardsToDraw) {
                 if (this.numberOfDraws === 0) {
@@ -84,6 +85,7 @@ export default {
             this.numberOfDraws = this.numberOfDraws + 1
             this.evaluate(this.hand)
             this.cardsLeft = this.deck.cards.length
+          }
         },
         evaluate: function() {
 
@@ -182,7 +184,7 @@ export default {
           }
         },
         checkForDiscard: function(cardIndex) {
-
+          if (this.numberOfDraws <= 1) {
             if (_.includes(this.discards, cardIndex)) {
                 let target = this.discards.indexOf(cardIndex);
                 this.discards.splice(target, 1);
@@ -192,15 +194,16 @@ export default {
                 this.discards.sort();
                 console.log('Added to array')
             }
-
+          }
         },
         showDiscardLabel: function(index) {
-
+          if (this.numberOfDraws <= 1) {
             if (_.includes(this.discards, index)) {
                 return true
             } else {
                 return false
             }
+          }
 
         }
     },
