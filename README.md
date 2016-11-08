@@ -2,6 +2,11 @@
 
 > A Vue.js project
 
+Key components:
+
+* Deck of Cards API (https://deckofcardsapi.com/)
+* Poker Hand Analyzer (http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math)
+
 ## Build Setup
 
 ``` bash
