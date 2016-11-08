@@ -2,6 +2,11 @@
   <div class="poker">
      <div class="container">
         <div class="col-md-12">
+          <div class="text-center" style="margin-top: 10px">
+
+           <p style="font-weight: 700; margin-bottom: 30px; color: red">Note: Please diable Adblock or Adblock Plus (otherwise Ace of Diamonds -- AD.png -- won't display!)</p>
+
+         </div>
            <div class="well" style="margin-bottom: 30px">
               <div style="padding-top: 5px; padding-bottom: 5px;" class="text-center">
                  <button class="btn btn-primary" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>&nbsp;&nbsp;
@@ -11,6 +16,7 @@
                </div>
               </div>
            </div>
+
         </div>
 
         <span class="col-md-12 text-center">
@@ -19,7 +25,7 @@
         <br><br><br>
         <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand, handFinished: !startOfHand }">
         </span>
-        <div class="text-center" style="color: #555; margin-top: 30px">Click on cards you want to discard, then click 'DISCARD'.</div>
+        <div class="text-center" style="color: #555; margin-top: 30px" v-show="!disableShuffle">Click on cards you want to discard, then click 'DISCARD'.</div>
         <div style="margin-top: 50px;" v-bind:class="{fadeInLeft: showWinnings(numberOfDraws)}" v-show="numberOfDraws > 1" class="animated text-center">
            <h3 style="color: red; font-weight: 900; text-transform: uppercase; ">{{evaluatedHand}}</h3>
             <button class="btn btn-primary" style="margin-top: 20px;" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>
@@ -36,11 +42,7 @@
            <p class="well" style="margin-top: 35px">
              {{ hand }}
            </p> -->
-           <div class="text-center" style="margin-top: 20px">
 
-            <p style="font-weight: 700">Note: Please diable Adblock or Adblock Plus (otherwise Ace of Diamonds -- AD.png -- won't display!)</p>
-
-          </div>
 
            <div class="text-center" style="padding: 30px"><a href="https://github.com/cschweda/vuepoker01">Github</a></div>
 
