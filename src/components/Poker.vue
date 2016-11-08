@@ -2,23 +2,24 @@
   <div class="poker">
      <div class="container">
         <div class="col-md-12">
-           <div class="well">
-              <div style="padding-top: 5px; padding-bottom: 5px" class="text-center">
+           <div class="well" style="margin-bottom: 30px">
+              <div style="padding-top: 5px; padding-bottom: 5px;" class="text-center">
                  <button class="btn btn-primary" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal</button>&nbsp;&nbsp;
                  <button class="btn btn-primary" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
                  Discard Index: {{discards}} | Cards left: {{cardsLeft}} | Coins: {{coins}} | Draws: {{numberOfDraws}}
               </div>
            </div>
         </div>
-        <div class="text-center" style="margin-top: 30px">
-           <h3>{{evaluatedHand}}</h3>
-        </div>
+
         <span class="col-md-12 text-center">
         <span v-for="(card, index) in hand" v-on:click="checkForDiscard(index)" style="display: inline-block;padding-right: 20px;">
-        <span v-if="showDiscardLabel(index)">DISCARD</span>
-        <br>
+        <span v-if="showDiscardLabel(index)"><span style="background: #000; color: #fff; padding: 8px;">DISCARD</span></span>
+        <br><br><br>
         <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand }">
         </span>
+        <div class="text-center well" style="margin-top: 50px;">
+           <h3>{{evaluatedHand}}</h3>
+        </div>
         </span>
         <div>&nbsp;</div>
         <div v-if="showWinnings(numberOfDraws)">
