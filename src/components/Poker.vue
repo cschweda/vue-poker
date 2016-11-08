@@ -19,6 +19,7 @@
         <br><br><br>
         <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand, handFinished: !startOfHand }">
         </span>
+        <div class="text-center" style="color: #555; margin-top: 30px">Click on cards you want to discard, then click 'DISCARD'.</div>
         <div style="margin-top: 50px;" v-bind:class="{fadeInLeft: showWinnings(numberOfDraws)}" v-show="numberOfDraws > 1" class="animated text-center">
            <h3 style="color: red; font-weight: 900; text-transform: uppercase; ">{{evaluatedHand}}</h3>
             <button class="btn btn-primary" style="margin-top: 20px;" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>
