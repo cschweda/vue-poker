@@ -4,8 +4,18 @@
 
 Key components:
 
+* VueJS (https://vuejs.org/)
 * Deck of Cards API (https://deckofcardsapi.com/)
 * Poker Hand Analyzer (http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math)
+
+TODO:
+
+* Session stats
+* Custom decks
+* Fisher-Yates Shuffle Algorithm
+* UI improvements
+
+
 
 ## Build Setup
 
