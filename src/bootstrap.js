@@ -28,7 +28,7 @@ window._ = lodash;
  * Animate.css
  * ============
  *
- * Require lodash
+ * Require Animate.css
  *
  *
  */

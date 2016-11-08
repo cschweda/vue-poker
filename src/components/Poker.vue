@@ -4,7 +4,7 @@
         <div class="col-md-12">
            <div class="well" style="margin-bottom: 30px">
               <div style="padding-top: 5px; padding-bottom: 5px;" class="text-center">
-                 <button class="btn btn-primary" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal</button>&nbsp;&nbsp;
+                 <button class="btn btn-primary" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>&nbsp;&nbsp;
                  <button class="btn btn-primary" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
                 <div style="margin-top: 15px; font-weight: 700">
                  Discard Index: {{discards}} | Cards left: {{cardsLeft}} |  Draws: {{numberOfDraws}}
@@ -19,14 +19,16 @@
         <br><br><br>
         <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand, handFinished: !startOfHand }">
         </span>
-        <div class="text-center well" style="margin-top: 50px;">
-           <h3>{{evaluatedHand}}</h3>
+        <div style="margin-top: 50px;" v-bind:class="{fadeInLeft: showWinnings(numberOfDraws)}" v-show="numberOfDraws > 1" class="animated text-center">
+           <h3 style="color: red; font-weight: 900; text-transform: uppercase; ">{{evaluatedHand}}</h3>
+            <button class="btn btn-primary" style="margin-top: 20px;" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>
         </div>
         </span>
         <div>&nbsp;</div>
-        <div>
+
+        <div class="well">
            <div style="padding-top: 10px">
-              <div class="text-center" style="font-size: 16px; font-weight: 700">Coins: {{coins}} | Coins bet: {{coins_per_bet}} | Coins won: {{coins_won}}</div>
+              <div class="text-center" style="font-size: 16px; font-weight: 700; font-size: 24px; text-transform: uppercase">Coins: {{coins}} | Coins bet: {{coins_per_bet}} | Coins won: {{coins_won}}</div>
            </div>
         </div>
         <!-- <div style="clear: both"></div>
@@ -251,5 +253,5 @@ export default {
 <style>
 .card:hover {cursor: pointer; cursor: hand; opacity: .3}
 .discard {opacity: .3}
-.handFinished {opacity: .3}
+.handFinished {opacity: .7}
 </style>
