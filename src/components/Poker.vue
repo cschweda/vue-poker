@@ -17,7 +17,7 @@
         <span v-for="(card, index) in hand" v-on:click="checkForDiscard(index)" style="display: inline-block;padding-right: 20px;">
         <span v-if="showDiscardLabel(index)">DISCARD</span>
         <br>
-        <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index)}">
+        <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand }">
         </span>
         </span>
         <div>&nbsp;</div>
@@ -47,7 +47,7 @@ export default {
           if (this.disableShuffle) {
             this.discards = []
             this.numberOfDraws = 0
-
+            this.startOfHand = true
             this.coins = this.coins - this.coins_per_bet
             this.coins_won = 0
             const shuffle_api = deck_api + 'draw/?count=52'
@@ -83,6 +83,7 @@ export default {
                     // Remove drawn cards from deck
                     this.deck.cards.splice(0, cardsToDraw)
                     this.discards = []
+                    this.startOfHand = false
                 }
             } else {
                 console.log('No more cards to draw.')
@@ -233,7 +234,8 @@ export default {
             payout: '',
             coins_per_bet: 5,
             coins_won: '',
-            disableShuffle: true
+            disableShuffle: true,
+            startOfHand: true
         }
     },
 
@@ -241,7 +243,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-.discard {opacity: .4}
+<style>
+.card:hover {cursor: pointer; cursor: hand; opacity: .3}
+.discard {opacity: .3}
 </style>
