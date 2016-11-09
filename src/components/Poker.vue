@@ -75,7 +75,7 @@ export default {
             array[m] = array[i];
             array[i] = t;
           }
-          console.log('Fisher-Yates shuffle completed.')
+          console.log('Fisher-Yates shuffle')
           return array;
 
         },
@@ -93,6 +93,9 @@ export default {
             this.axios.get(shuffle_api).then((response) => {
                 this.deck = response.data
                 this.deck = this.fyShuffle(this.deck)
+
+                let msg = 'Shuffled and deck array created.'
+                console.log(msg)
                 this.status.push(msg);
                 this.draw(CARDS_TO_START)
                 this.disableShuffle = !this.disableShuffle
