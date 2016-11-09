@@ -7,8 +7,8 @@
          </div>
            <div class="well" style="margin-bottom: 30px">
               <div style="padding-top: 5px; padding-bottom: 5px;" class="text-center">
-                 <button class="btn btn-primary" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>&nbsp;&nbsp;
-                 <button class="btn btn-primary" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
+                 <button class="btn btn-primary" v-on:click="dealHand()" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>&nbsp;&nbsp;
+                 <button class="btn btn-primary" v-on:click="drawFromDeck(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
                 <div style="margin-top: 15px; font-weight: 700">
                  Discard Index: {{discards}} | Cards left: {{deck.length}} |  Draws: {{numberOfDraws}}
                </div>
@@ -26,7 +26,7 @@
         <div class="text-center" style="color: #555; margin-top: 30px" v-show="!disableShuffle">Click on cards you want to discard, then click 'DISCARD'.</div>
         <div style="margin-top: 50px;" v-bind:class="{fadeInLeft: showWinnings(numberOfDraws)}" v-show="numberOfDraws > 1" class="animated text-center">
            <h3 style="color: red; font-weight: 900; text-transform: uppercase; ">{{evaluatedHand}}</h3>
-            <button class="btn btn-primary" style="margin-top: 20px;" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>
+            <button class="btn btn-primary" style="margin-top: 20px;" v-on:click="dealHand()" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>
         </div>
         </span>
         <div>&nbsp;</div>
@@ -54,20 +54,10 @@ export default {
     name: 'Poker',
     mounted: function() {
         this.status.push('App mounted.')
-        this.shuffleUpAndDeal()
+        this.dealHand()
     },
     methods: {
-        shuffleDeck: function () {
-          var m = this.deck.length, t, i;
-          while (m) {
-            i = Math.floor(Math.random() * m--);
-            t = this.deck[m];
-            this.deck[m] = this.deck[i];
-            this.deck[i] = t;
-          }
-          console.log('Fisher-Yates shuffle')
-        },
-        generateDeck: function () {
+        getDeck: function () {
           let suits = ['CLUBS','HEARTS','SPADES','DIAMONDS']
           let values = ['2','3','4','5','6','7','8','9','10','JACK','QUEEN','KING','ACE']
           for (let s = 0; s < suits.length; s++) {
@@ -86,24 +76,17 @@ export default {
 
             console.log('Deck created')
         },
-        shuffleUpAndDeal: function() {
-          if (this.disableShuffle) {
-            const CARDS_TO_DRAW = 5
-            this.deck = []
-            this.discards = []
-            this.numberOfDraws = 0
-            this.coins_won = 0
-            this.startOfHand = true
-            this.disableShuffle = true
-            this.coins = this.coins - this.coins_per_bet
-            this.generateDeck()
-            this.shuffleDeck()
-            this.draw(CARDS_TO_DRAW)
-            this.disableShuffle = !this.disableShuffle
-
+        shuffleDeck: function () {
+          var m = this.deck.length, t, i;
+          while (m) {
+            i = Math.floor(Math.random() * m--);
+            t = this.deck[m];
+            this.deck[m] = this.deck[i];
+            this.deck[i] = t;
           }
+          console.log('Fisher-Yates shuffle')
         },
-        draw: function(cardsToDraw) {
+        drawFromDeck: function(cardsToDraw) {
 
           if (this.numberOfDraws <= 1) {
             console.log('Number of draws: ', this.numberOfDraws)
@@ -137,6 +120,24 @@ export default {
 
           }
         },
+        dealHand: function() {
+          if (this.disableShuffle) {
+            const CARDS_TO_DRAW = 5
+            this.deck = []
+            this.discards = []
+            this.numberOfDraws = 0
+            this.coins_won = 0
+            this.startOfHand = true
+            this.disableShuffle = true
+            this.coins = this.coins - this.coins_per_bet
+            this.getDeck()
+            this.shuffleDeck()
+            this.drawFromDeck(CARDS_TO_DRAW)
+            this.disableShuffle = !this.disableShuffle
+
+          }
+        },
+
         evaluateHand: function() {
 
 
