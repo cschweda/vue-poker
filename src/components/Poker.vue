@@ -54,7 +54,7 @@ export default {
     name: 'Poker',
     mounted: function() {
         this.status.push('App mounted.')
-        this.shuffleUpAndDeal(this.DECK_API)
+        this.shuffleUpAndDeal()
     },
     methods: {
         shuffleDeck: function () {
@@ -85,7 +85,7 @@ export default {
 
             console.log('Deck created')
         },
-        shuffleUpAndDeal: function(deck_api) {
+        shuffleUpAndDeal: function() {
           if (this.disableShuffle) {
             const CARDS_TO_DRAW = 5
             this.deck = []
