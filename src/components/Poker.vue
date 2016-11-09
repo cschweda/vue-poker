@@ -36,11 +36,6 @@
               <div class="text-center" style="font-size: 16px; font-weight: 700; font-size: 24px; text-transform: uppercase">Coins: {{coins}} | Coins bet: {{coins_per_bet}} | Coins won: {{coins_won}}</div>
            </div>
         </div>
-        <!-- <div style="clear: both"></div>
-           <p class="well" style="margin-top: 35px">
-             {{ hand }}
-           </p> -->
-
 
            <div class="text-center" style="padding: 30px"><a href="https://github.com/cschweda/vuepoker01">Github Source</a>&nbsp;|&nbsp;<a href="https://vuejs.org/">Vue.js</a></div>
 
@@ -57,139 +52,141 @@ export default {
         this.dealHand()
     },
     methods: {
-        getDeck: function () {
-          let suits = ['CLUBS','HEARTS','SPADES','DIAMONDS']
-          let values = ['2','3','4','5','6','7','8','9','10','JACK','QUEEN','KING','ACE']
-          for (let s = 0; s < suits.length; s++) {
-            for (let v = 0; v< values.length; v++) {
-              let card = {}
-              card["value"] = values[v]
-              card["suit"] = suits[s]
-              // card.code: Get the '0' if it's a 10, otherwise get the first character. Then concat value.
-              values[v] === '10' ? card["code"] = values[v].charAt(1) + suits[s].charAt(0) : card["code"] = values[v].charAt(0) + suits[s].charAt(0)
-              // card.image: If it's an Ace of Diamonds use 'aceDiamonds.png' instead of 'AD.png' in order to circumvent ad blockers
-              card["code"] === 'AD' ? card["image"] = 'aceDiamonds.png' : card["image"] = card["code"] + '.png'
-              // Put the card in the deck.
-              this.deck.push(card)
-              }
+        getDeck: function() {
+            let suits = ['CLUBS', 'HEARTS', 'SPADES', 'DIAMONDS']
+            let values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING', 'ACE']
+            for (let s = 0; s < suits.length; s++) {
+                for (let v = 0; v < values.length; v++) {
+                    let card = {}
+                    card["value"] = values[v]
+                    card["suit"] = suits[s]
+                        // card.code: Get the '0' if it's a 10, otherwise get the first character. Then concat value.
+                    values[v] === '10' ? card["code"] = values[v].charAt(1) + suits[s].charAt(0) : card["code"] = values[v].charAt(0) + suits[s].charAt(0)
+                        // card.image: If it's an Ace of Diamonds use 'aceDiamonds.png' instead of 'AD.png' in order to circumvent ad blockers
+                    card["code"] === 'AD' ? card["image"] = 'aceDiamonds.png' : card["image"] = card["code"] + '.png'
+                        // Put the card object in the deck.
+                    this.deck.push(card)
+                }
             }
-
             console.log('Deck created')
         },
-        shuffleDeck: function () {
-          var m = this.deck.length, t, i;
-          while (m) {
-            i = Math.floor(Math.random() * m--);
-            t = this.deck[m];
-            this.deck[m] = this.deck[i];
-            this.deck[i] = t;
-          }
-          console.log('Fisher-Yates shuffle')
+        shuffleDeck: function() {
+            var m = this.deck.length,
+                t, i;
+            while (m) {
+                i = Math.floor(Math.random() * m--);
+                t = this.deck[m];
+                this.deck[m] = this.deck[i];
+                this.deck[i] = t;
+            }
+            console.log('Fisher-Yates shuffle')
         },
         drawFromDeck: function(cardsToDraw) {
 
-          if (this.numberOfDraws <= 1) {
-            console.log('Number of draws: ', this.numberOfDraws)
+            if (this.numberOfDraws <= 1) {
+                console.log('Number of draws: ', this.numberOfDraws)
 
-            if (this.deck.length >= cardsToDraw) {
-                if (this.numberOfDraws === 0) {
-                    // Initial phase: Draw 5 cards.
-                    console.log('Initial phase: Draw 5 cards')
-                    this.hand = this.deck.slice(0, cardsToDraw)
-                    this.deck.splice(0, cardsToDraw)
+                if (this.deck.length >= cardsToDraw) {
+                    if (this.numberOfDraws === 0) {
+                        // Initial phase: Draw 5 cards.
+                        console.log('Initial phase: Draw 5 cards')
+                        this.hand = this.deck.slice(0, cardsToDraw)
+                        this.deck.splice(0, cardsToDraw)
 
-                } else {
-                    // Drawing phase: Replace discards with drawn cards
-                    console.log('Drawing phase: Replace discards with drawn cards')
-                    this.drawnCards = this.deck.slice(0, cardsToDraw)
-                    for (let i = 0; i < this.discards.length; i++) {
-                        this.hand[this.discards[i]] = this.drawnCards[i];
+                    } else {
+                        // Drawing phase: Replace discards with drawn cards
+                        console.log('Drawing phase: Replace discards with drawn cards')
+                        this.drawnCards = this.deck.slice(0, cardsToDraw)
+                        for (let i = 0; i < this.discards.length; i++) {
+                            this.hand[this.discards[i]] = this.drawnCards[i];
+                        }
+                        // Remove drawn cards from deck
+                        this.deck.splice(0, cardsToDraw)
+                        this.discards = []
+                        this.startOfHand = false
+
                     }
-                    // Remove drawn cards from deck
-                    this.deck.splice(0, cardsToDraw)
-                    this.discards = []
-                    this.startOfHand = false
-
+                } else {
+                    console.log('No more cards to draw.')
                 }
-            } else {
-                console.log('No more cards to draw.')
-            }
-            console.log('Cards left: ', this.deck.length)
-            this.numberOfDraws = this.numberOfDraws + 1
-            this.evaluateHand()
+                console.log('Cards left: ', this.deck.length)
+                this.numberOfDraws = this.numberOfDraws + 1
+                this.evaluateHand()
 
-          }
+            }
         },
         dealHand: function() {
-          if (this.disableShuffle) {
-            const CARDS_TO_DRAW = 5
-            this.deck = []
-            this.discards = []
-            this.numberOfDraws = 0
-            this.coins_won = 0
-            this.startOfHand = true
-            this.disableShuffle = true
-            this.coins = this.coins - this.coins_per_bet
-            this.getDeck()
-            this.shuffleDeck()
-            this.drawFromDeck(CARDS_TO_DRAW)
-            this.disableShuffle = !this.disableShuffle
+            if (this.disableShuffle) {
+                // set game variables
+                const CARDS_TO_DRAW = 5
+                this.deck = []
+                this.discards = []
+                this.numberOfDraws = 0
+                this.coins_won = 0
+                this.startOfHand = true
+                this.disableShuffle = true
+                this.coins = this.coins - this.coins_per_bet
+                // start the hand
+                this.getDeck()
+                this.shuffleDeck()
+                this.drawFromDeck(CARDS_TO_DRAW)
+                this.disableShuffle = !this.disableShuffle
 
-          }
+            }
         },
 
         evaluateHand: function() {
 
 
             const hands = [
-              "4 of a Kind",
-              "Straight Flush",
-              "Straight",
-              "Flush",
-              "High Card",
-              "1 Pair",
-              "2 Pair",
-              "Royal Flush",
-              "3 of a Kind",
-              "Full House"
-            ],
-            payout = [
-              25,     // 4 of a kind
-              50,     // Straight flush
-              4,      // Straight
-              6,      // Flush
-              0,      // High card
-              1,      // Pair
-              2,      // Two pair
-              976,    // Royal Flush
-              3,      // 3 of a kind
-              9       // Full house
-            ],
-            A = 14,
-            K = 13,
-            Q = 12,
-            J = 11,
-            suits = {
-              "SPADES": 1,
-              "CLUBS": 2,
-              "HEARTS": 4,
-              "DIAMONDS": 8
-            },
-            conversion = {
-              "ACE" : 14,
-              "KING": 13,
-              "QUEEN" : 12,
-              "JACK" : 11,
-              "10": 10,
-              "9": 9,
-              "8": 8,
-              "7": 7,
-              "6": 6,
-              "5": 5,
-              "4": 4,
-              "3": 3,
-              "2": 2
-            }
+                    "4 of a Kind",
+                    "Straight Flush",
+                    "Straight",
+                    "Flush",
+                    "High Card",
+                    "1 Pair",
+                    "2 Pair",
+                    "Royal Flush",
+                    "3 of a Kind",
+                    "Full House"
+                ],
+                payout = [
+                    25, // 4 of a kind
+                    50, // Straight flush
+                    4, // Straight
+                    6, // Flush
+                    0, // High card
+                    1, // Pair
+                    2, // Two pair
+                    976, // Royal Flush
+                    3, // 3 of a kind
+                    9 // Full house
+                ],
+                A = 14,
+                K = 13,
+                Q = 12,
+                J = 11,
+                suits = {
+                    "SPADES": 1,
+                    "CLUBS": 2,
+                    "HEARTS": 4,
+                    "DIAMONDS": 8
+                },
+                conversion = {
+                    "ACE": 14,
+                    "KING": 13,
+                    "QUEEN": 12,
+                    "JACK": 11,
+                    "10": 10,
+                    "9": 9,
+                    "8": 8,
+                    "7": 7,
+                    "6": 6,
+                    "5": 5,
+                    "4": 4,
+                    "3": 3,
+                    "2": 2
+                }
 
             // Calculates the Rank of a 5 card Poker hand using bit manipulations.
             // Many thanks to: //http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
@@ -203,59 +200,59 @@ export default {
                 v -= (ss[0] == (ss[1] | ss[2] | ss[3] | ss[4])) * ((s == 0x7c00) ? -5 : 1);
                 //console.log("Hand: " + hands[v] + (s == 0x403c ? " (Ace low)" : "") + "<br/>");
                 let evaluatedHand = hands[v] + (s == 0x403c ? " (Ace low)" : "");
-                console.log('Payout: ',payout[v])
+                console.log('Payout: ', payout[v])
                 return {
-                          evaluatedHand: evaluatedHand,
-                          coins_won: payout[v]
-                        }
+                    evaluatedHand: evaluatedHand,
+                    coins_won: payout[v]
+                }
             }
             let arraySuits = [];
             let arrayValues = [];
-            for (let i = 0; i<this.hand.length; i++) {
-              console.log(this.hand[i].value + ' / ' + this.hand[i].suit)
-              arraySuits.push(suits[this.hand[i].suit]);
-              arrayValues.push(conversion[this.hand[i].value]);
+            for (let i = 0; i < this.hand.length; i++) {
+                console.log(this.hand[i].value + ' / ' + this.hand[i].suit)
+                arraySuits.push(suits[this.hand[i].suit]);
+                arrayValues.push(conversion[this.hand[i].value]);
             }
-            console.log('Suits: ',arraySuits)
-            console.log('Values: ',arrayValues)
+            console.log('Suits: ', arraySuits)
+            console.log('Values: ', arrayValues)
             let myHand = rankPokerHand(arrayValues, arraySuits);
             this.evaluatedHand = myHand.evaluatedHand
             this.coins_won = this.coins_per_bet * myHand.coins_won
             if (this.numberOfDraws > 1) {
-              this.coins = this.coins + this.coins_won
-              this.disableShuffle = !this.disableShuffle
-              this.handFinished = !this.handFinished;
+                this.coins = this.coins + this.coins_won
+                this.disableShuffle = !this.disableShuffle
+                this.handFinished = !this.handFinished;
             }
 
         },
-        showWinnings: function () {
-          if (this.numberOfDraws > 1) {
-            return true
-          } else {
-            return false
-          }
-        },
-        checkForDiscard: function(cardIndex) {
-          if (this.numberOfDraws <= 1) {
-            if (_.includes(this.discards, cardIndex)) {
-                let target = this.discards.indexOf(cardIndex);
-                this.discards.splice(target, 1);
-                console.log('Removed from array')
-            } else {
-                this.discards.push(cardIndex);
-                this.discards.sort();
-                console.log('Added to array')
-            }
-          }
-        },
-        showDiscardLabel: function(index) {
-          if (this.numberOfDraws <= 1) {
-            if (_.includes(this.discards, index)) {
+        showWinnings: function() {
+            if (this.numberOfDraws > 1) {
                 return true
             } else {
                 return false
             }
-          }
+        },
+        checkForDiscard: function(cardIndex) {
+            if (this.numberOfDraws <= 1) {
+                if (_.includes(this.discards, cardIndex)) {
+                    let target = this.discards.indexOf(cardIndex);
+                    this.discards.splice(target, 1);
+                    console.log('Removed from array')
+                } else {
+                    this.discards.push(cardIndex);
+                    this.discards.sort();
+                    console.log('Added to array')
+                }
+            }
+        },
+        showDiscardLabel: function(index) {
+            if (this.numberOfDraws <= 1) {
+                if (_.includes(this.discards, index)) {
+                    return true
+                } else {
+                    return false
+                }
+            }
 
         }
     },
@@ -284,7 +281,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 .card:hover {cursor: pointer; cursor: hand; opacity: .3}
 .discard {opacity: .3}
