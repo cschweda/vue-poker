@@ -38,9 +38,9 @@
         <span v-show="!startOfHand" v-for="(card, index) in hand" v-on:click="checkForDiscard(index)" style="display: inline-block;padding-right: 20px;" class="" >
           <span v-if="showDiscardLabel(index)"><span style="background: #000; color: #fff; padding: 8px;">DISCARD</span></span>
           <br><br><br>
-          <img :src="localImagePath + card.image" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand, handFinished: !startOfHand }">
+          <img :src="localImagePath + card.image" height="200" v-bind:class="{discard: showDiscardLabel(index)}">
         </span>
-        <div class="text-center" style="color: #555; margin-top: 30px" v-show="!disableShuffle">Click on cards you want to discard, then click 'DISCARD'.</div>
+
         <div style="margin-top: 50px;" v-bind:class="{fadeInLeft: showWinnings(numberOfDraws)}" v-show="showWinnings()" class="animated text-center">
            <h3 style="color: red; font-weight: 900; text-transform: uppercase; ">{{evaluatedHand}}</h3>
             <!-- <button class="btn btn-primary" style="margin-top: 20px;" v-on:click="dealHand()" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button> -->
