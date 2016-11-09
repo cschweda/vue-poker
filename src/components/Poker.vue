@@ -66,7 +66,7 @@ export default {
     name: 'Poker',
     mounted: function() {
         this.status.push('App mounted.')
-        //this.dealHand(5)
+            //this.dealHand(5)
 
     },
     methods: {
@@ -99,60 +99,60 @@ export default {
             }
             console.log('Fisher-Yates shuffle')
         },
-        placeBet: function (bet) {
-          if (this.betAllowed) {
-          this.coins_won = 0
-          this.coins_bet = bet
-          this.startOfHand = true
-          this.numberOfDraws = 0
-          this.disableShuffle = false
-          console.log('Bet: ',this.coins_bet)
-          console.log('StartOfHand: ',this.startOfHand)
-        }
+        placeBet: function(bet) {
+            if (this.betAllowed) {
+                this.coins_won = 0
+                this.coins_bet = bet
+                this.startOfHand = true
+                this.numberOfDraws = 0
+                this.disableShuffle = false
+                console.log('Bet: ', this.coins_bet)
+                console.log('StartOfHand: ', this.startOfHand)
+            }
 
         },
         drawFromDeck: function(cardsToDraw) {
 
             if (this.numberOfDraws <= 1) {
                 console.log('Number of draws: ', this.numberOfDraws)
-                    if (this.numberOfDraws === 0) {
-                        // Initial phase: Draw 5 cards.
-                        console.log('Initial phase: Draw 5 cards')
-                        this.hand = this.deck.slice(0, cardsToDraw)
+                if (this.numberOfDraws === 0) {
+                    // Initial phase: Draw 5 cards.
+                    console.log('Initial phase: Draw 5 cards')
+                    this.hand = this.deck.slice(0, cardsToDraw)
+                    this.deck.splice(0, cardsToDraw)
+                    this.betAllowed = false
+                    this.discardsAllowed = true
+                    console.log('Cards left: ', this.deck.length)
+                    this.numberOfDraws = this.numberOfDraws + 1
+                    this.evaluateHand()
+                } else {
+
+                    if (this.discardsAllowed) {
+                        // Drawing phase: Replace discards with drawn cards
+                        console.log('Drawing phase: Replace discards with drawn cards')
+                        this.drawnCards = this.deck.slice(0, cardsToDraw)
+                        for (let i = 0; i < this.discards.length; i++) {
+                            this.hand[this.discards[i]] = this.drawnCards[i];
+                        }
+                        // Remove drawn cards from deck
                         this.deck.splice(0, cardsToDraw)
+                        this.discards = []
+                        this.startOfHand = false
                         this.betAllowed = false
-                        this.discardsAllowed = true
+                        this.discardsAllowed = false
                         console.log('Cards left: ', this.deck.length)
                         this.numberOfDraws = this.numberOfDraws + 1
                         this.evaluateHand()
-                    } else {
-
-                        if (this.discardsAllowed) {
-                          // Drawing phase: Replace discards with drawn cards
-                          console.log('Drawing phase: Replace discards with drawn cards')
-                          this.drawnCards = this.deck.slice(0, cardsToDraw)
-                          for (let i = 0; i < this.discards.length; i++) {
-                              this.hand[this.discards[i]] = this.drawnCards[i];
-                            }
-                          // Remove drawn cards from deck
-                          this.deck.splice(0, cardsToDraw)
-                          this.discards = []
-                          this.startOfHand = false
-                          this.betAllowed = false
-                          this.discardsAllowed = false
-                          console.log('Cards left: ', this.deck.length)
-                          this.numberOfDraws = this.numberOfDraws + 1
-                          this.evaluateHand()
-                      }
-
                     }
+
                 }
+            }
 
 
 
         },
         dealHand: function() {
-              if (!this.disableShuffle) {
+            if (!this.disableShuffle) {
                 // set game variables
                 const CARDS_TO_DRAW = 5
                 this.deck = []
@@ -162,11 +162,11 @@ export default {
                 this.startOfHand = false
                 this.disableShuffle = true
                 this.coins = this.coins - this.coins_bet
-                // start the hand
+                    // start the hand
                 this.getDeck()
                 this.shuffleDeck()
                 this.drawFromDeck(CARDS_TO_DRAW)
-              }
+            }
 
 
         },

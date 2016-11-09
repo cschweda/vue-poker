@@ -56,3 +56,15 @@ require('bootstrap/less/bootstrap.less');
  * http://http://fontawesome.io/
  */
 require('font-awesome/less/font-awesome.less');
+
+
+/* ============
+ * Jasny bootstrap
+ * ============
+ *
+ * https://github.com/jasny/bootstrap
+ *
+ */
+
+ require('jasny-bootstrap/dist/css/jasny-bootstrap.css');
+ require('jasny-bootstrap/dist/js/jasny-bootstrap.js');
