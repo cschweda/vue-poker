@@ -14,7 +14,7 @@ TODO:
 
 * Session stats
 * Custom decks
-* Fisher-Yates Shuffle Algorithm
+* ~~Fisher-Yates Shuffle Algorithm~~
 * UI improvements
 
 Live demo:

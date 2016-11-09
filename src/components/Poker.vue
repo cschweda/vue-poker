@@ -60,6 +60,25 @@ export default {
         this.shuffleUpAndDeal(this.DECK_API, 5)
     },
     methods: {
+        fyShuffle: function (array) {
+
+          var m = array.length, t, i;
+
+          // While there remain elements to shuffle…
+          while (m) {
+
+            // Pick a remaining element…
+            i = Math.floor(Math.random() * m--);
+
+            // And swap it with the current element.
+            t = array[m];
+            array[m] = array[i];
+            array[i] = t;
+          }
+          console.log('Fisher-Yates shuffle completed.')
+          return array;
+
+        },
         shuffleUpAndDeal: function(deck_api, draw) {
           if (this.disableShuffle) {
             this.discards = []
@@ -73,8 +92,7 @@ export default {
             this.disableShuffle = true
             this.axios.get(shuffle_api).then((response) => {
                 this.deck = response.data
-                let msg = 'Shuffled and deck array created.'
-                console.log(msg)
+                this.deck = this.fyShuffle(this.deck)
                 this.status.push(msg);
                 this.draw(CARDS_TO_START)
                 this.disableShuffle = !this.disableShuffle
