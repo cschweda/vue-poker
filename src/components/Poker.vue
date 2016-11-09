@@ -7,18 +7,20 @@
          </div>
            <div class="well" style="margin-bottom: 30px">
               <div style="padding-top: 5px; padding-bottom: 5px;" class="text-center">
-                <div class="btn-group" role="group">
+                <span style="font-weight: 900; text-transform: uppercase; font-size: 14px"><span v-bind:class="{disabledText: !betAllowed}">Place bet:&nbsp;</span></span>
+                <span class="btn-group" role="group">
                     <button type="button" class="btn btn-default" v-bind:class="{disabled: !betAllowed}" v-on:click="placeBet(5)">5</button>
                     <button type="button" class="btn btn-default" v-bind:class="{disabled: !betAllowed}" v-on:click="placeBet(10)">10</button>
                     <button type="button" class="btn btn-default" v-bind:class="{disabled: !betAllowed}" v-on:click="placeBet(15)">15</button>
                     <button type="button" class="btn btn-default" v-bind:class="{disabled: !betAllowed}" v-on:click="placeBet(20)">20</button>
                     <button type="button" class="btn btn-default" v-bind:class="{disabled: !betAllowed}" v-on:click="placeBet(25)">25</button>
-                  </div>
+                  </span>
+                  &nbsp;&nbsp;
                  <button class="btn btn-primary" v-on:click="dealHand()" v-bind:class="{disabled: disableShuffle}">Shuffle Up and Deal!!</button>&nbsp;&nbsp;
-                 <button class="btn btn-primary" v-on:click="drawFromDeck(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
-                <div style="margin-top: 15px; font-weight: 700">
+                 <button class="btn btn-primary" v-on:click="drawFromDeck(discards.length)" v-bind:class="{disabled: betAllowed}">Discard {{discards.length}}</button>
+                <!--<div style="margin-top: 15px; font-weight: 700">
                  Coins bet: {{coins_bet}} | Discard Index: {{discards}} | Cards left: {{deck.length}} |  Draws: {{numberOfDraws}}
-               </div>
+               </div>-->
               </div>
            </div>
 
@@ -110,38 +112,44 @@ export default {
 
         },
         drawFromDeck: function(cardsToDraw) {
-            this.betAllowed = false
+
             if (this.numberOfDraws <= 1) {
                 console.log('Number of draws: ', this.numberOfDraws)
-
-                if (this.deck.length >= cardsToDraw) {
                     if (this.numberOfDraws === 0) {
                         // Initial phase: Draw 5 cards.
                         console.log('Initial phase: Draw 5 cards')
                         this.hand = this.deck.slice(0, cardsToDraw)
                         this.deck.splice(0, cardsToDraw)
-
+                        this.betAllowed = false
+                        this.discardsAllowed = true
+                        console.log('Cards left: ', this.deck.length)
+                        this.numberOfDraws = this.numberOfDraws + 1
+                        this.evaluateHand()
                     } else {
-                        // Drawing phase: Replace discards with drawn cards
-                        console.log('Drawing phase: Replace discards with drawn cards')
-                        this.drawnCards = this.deck.slice(0, cardsToDraw)
-                        for (let i = 0; i < this.discards.length; i++) {
-                            this.hand[this.discards[i]] = this.drawnCards[i];
-                        }
-                        // Remove drawn cards from deck
-                        this.deck.splice(0, cardsToDraw)
-                        this.discards = []
-                        this.startOfHand = false
+
+                        if (this.discardsAllowed) {
+                          // Drawing phase: Replace discards with drawn cards
+                          console.log('Drawing phase: Replace discards with drawn cards')
+                          this.drawnCards = this.deck.slice(0, cardsToDraw)
+                          for (let i = 0; i < this.discards.length; i++) {
+                              this.hand[this.discards[i]] = this.drawnCards[i];
+                            }
+                          // Remove drawn cards from deck
+                          this.deck.splice(0, cardsToDraw)
+                          this.discards = []
+                          this.startOfHand = false
+                          this.betAllowed = false
+                          this.discardsAllowed = false
+                          console.log('Cards left: ', this.deck.length)
+                          this.numberOfDraws = this.numberOfDraws + 1
+                          this.evaluateHand()
+                      }
 
                     }
-                } else {
-                    console.log('No more cards to draw.')
                 }
-                console.log('Cards left: ', this.deck.length)
-                this.numberOfDraws = this.numberOfDraws + 1
-                this.evaluateHand()
 
-            }
+
+
         },
         dealHand: function() {
               if (!this.disableShuffle) {
@@ -305,6 +313,7 @@ export default {
             payout: '',
             coins_won: 0,
             disableShuffle: true,
+            disableDiscards: true,
             startOfHand: true,
             betAllowed: true
 
@@ -318,4 +327,5 @@ export default {
 .card:hover {cursor: pointer; cursor: hand; opacity: .3}
 .discard {opacity: .3}
 .handFinished {opacity: .7}
+.disabledText {color: #ddd}
 </style>
