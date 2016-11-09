@@ -13,7 +13,7 @@ Key components:
 TODO:
 
 
-* ~Variable bet sizes~ **ADDED**
+* ~~Variable bet sizes~~ **ADDED**
 * ~~Fisher-Yates Shuffle Algorithm~~ **ADDED**
 * Session stats
 * Custom decks
