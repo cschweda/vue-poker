@@ -68,8 +68,6 @@ export default {
           console.log('Fisher-Yates shuffle')
         },
         generateDeck: function () {
-          // let deck = []
-
           let suits = ['CLUBS','HEARTS','SPADES','DIAMONDS']
           let values = ['2','3','4','5','6','7','8','9','10','JACK','QUEEN','KING','ACE']
           for (let s = 0; s < suits.length; s++) {
@@ -77,8 +75,11 @@ export default {
               let card = {}
               card["value"] = values[v]
               card["suit"] = suits[s]
+              // card.code: Get the '0' if it's a 10, otherwise get the first character. Then concat value.
               values[v] === '10' ? card["code"] = values[v].charAt(1) + suits[s].charAt(0) : card["code"] = values[v].charAt(0) + suits[s].charAt(0)
-              card["code"] === 'AD' ? card["image"] = 'aceofdiamonds.png' : card["image"] = card["code"] + '.png'
+              // card.image: If it's an Ace of Diamonds use 'aceDiamonds.png' instead of 'AD.png' in order to circumvent ad blockers
+              card["code"] === 'AD' ? card["image"] = 'aceDiamonds.png' : card["image"] = card["code"] + '.png'
+              // Put the card in the deck.
               this.deck.push(card)
               }
             }
@@ -189,7 +190,7 @@ export default {
               "2": 2
             }
 
-            //Calculates the Rank of a 5 card Poker hand using bit manipulations.
+            // Calculates the Rank of a 5 card Poker hand using bit manipulations.
             // Many thanks to: //http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
 
             function rankPokerHand(cs, ss) {
@@ -213,15 +214,11 @@ export default {
               console.log(this.hand[i].value + ' / ' + this.hand[i].suit)
               arraySuits.push(suits[this.hand[i].suit]);
               arrayValues.push(conversion[this.hand[i].value]);
-
             }
-
             console.log('Suits: ',arraySuits)
             console.log('Values: ',arrayValues)
             let myHand = rankPokerHand(arrayValues, arraySuits);
             this.evaluatedHand = myHand.evaluatedHand
-
-              //
             this.coins_won = this.coins_per_bet * myHand.coins_won
             if (this.numberOfDraws > 1) {
               this.coins = this.coins + this.coins_won
