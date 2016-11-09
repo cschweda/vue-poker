@@ -21,7 +21,7 @@
         <span v-for="(card, index) in hand" v-on:click="checkForDiscard(index)" style="display: inline-block;padding-right: 20px;">
         <span v-if="showDiscardLabel(index)"><span style="background: #000; color: #fff; padding: 8px;">DISCARD</span></span>
         <br><br><br>
-        <img :src="localImagePath + card.code + localImageExt" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand, handFinished: !startOfHand }">
+        <img :src="localImagePath + card.image" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand, handFinished: !startOfHand }">
         </span>
         <div class="text-center" style="color: #555; margin-top: 30px" v-show="!disableShuffle">Click on cards you want to discard, then click 'DISCARD'.</div>
         <div style="margin-top: 50px;" v-bind:class="{fadeInLeft: showWinnings(numberOfDraws)}" v-show="numberOfDraws > 1" class="animated text-center">
@@ -54,7 +54,7 @@ export default {
     name: 'Poker',
     mounted: function() {
         this.status.push('App mounted.')
-        this.shuffleUpAndDeal(this.DECK_API, 5)
+        this.shuffleUpAndDeal(this.DECK_API)
     },
     methods: {
         shuffleDeck: function () {
@@ -85,8 +85,9 @@ export default {
 
             console.log('Deck created')
         },
-        shuffleUpAndDeal: function(deck_api, draw) {
+        shuffleUpAndDeal: function(deck_api) {
           if (this.disableShuffle) {
+            const CARDS_TO_DRAW = 5
             this.deck = []
             this.discards = []
             this.numberOfDraws = 0
@@ -94,10 +95,9 @@ export default {
             this.startOfHand = true
             this.disableShuffle = true
             this.coins = this.coins - this.coins_per_bet
-            const CARDS_TO_START = 5
             this.generateDeck()
             this.shuffleDeck()
-            this.draw(CARDS_TO_START)
+            this.draw(CARDS_TO_DRAW)
             this.disableShuffle = !this.disableShuffle
 
           }
@@ -106,6 +106,7 @@ export default {
 
           if (this.numberOfDraws <= 1) {
             console.log('Number of draws: ', this.numberOfDraws)
+
             if (this.deck.length >= cardsToDraw) {
                 if (this.numberOfDraws === 0) {
                     // Initial phase: Draw 5 cards.
@@ -131,13 +132,13 @@ export default {
             }
             console.log('Cards left: ', this.deck.length)
             this.numberOfDraws = this.numberOfDraws + 1
-            this.evaluate(this.hand)
+            this.evaluateHand()
 
           }
         },
-        evaluate: function() {
+        evaluateHand: function() {
 
-          //http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
+
             const hands = [
               "4 of a Kind",
               "Straight Flush",
@@ -187,7 +188,10 @@ export default {
               "3": 3,
               "2": 2
             }
+
             //Calculates the Rank of a 5 card Poker hand using bit manipulations.
+            // Many thanks to: //http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
+
             function rankPokerHand(cs, ss) {
                 let v, i, o, s = 1 << cs[0] | 1 << cs[1] | 1 << cs[2] | 1 << cs[3] | 1 << cs[4];
                 for (i = -1, v = o = 0; i < 5; i++, o = Math.pow(2, cs[i] * 4)) {
@@ -263,15 +267,12 @@ export default {
             status: [],
             deck: [],
             hand: [],
-            newDeck: [],
             drawnCards: [],
             localImagePath: '../static/img/',
-            localImageExt: '.png',
-            cardsToDraw: 5,
             discards: [],
             numberOfDraws: 0,
             evaluatedHand: '',
-            cardsLeft: 0,
+            cardsLeft: '',
             coins: 1000,
             payout: '',
             coins_per_bet: 5,

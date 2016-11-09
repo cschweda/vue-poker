@@ -13,6 +13,7 @@ Key components:
 TODO:
 
 * Session stats
+* Variable bet sizes
 * Custom decks
 * ~~Fisher-Yates Shuffle Algorithm~~ ADDED
 * UI improvements
