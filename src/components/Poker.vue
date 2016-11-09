@@ -7,10 +7,17 @@
          </div>
            <div class="well" style="margin-bottom: 30px">
               <div style="padding-top: 5px; padding-bottom: 5px;" class="text-center">
-                 <button class="btn btn-primary" v-on:click="dealHand()" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>&nbsp;&nbsp;
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" v-bind:class="{disabled: !betAllowed}" v-on:click="placeBet(5)">5</button>
+                    <button type="button" class="btn btn-default" v-bind:class="{disabled: !betAllowed}" v-on:click="placeBet(10)">10</button>
+                    <button type="button" class="btn btn-default" v-bind:class="{disabled: !betAllowed}" v-on:click="placeBet(15)">15</button>
+                    <button type="button" class="btn btn-default" v-bind:class="{disabled: !betAllowed}" v-on:click="placeBet(20)">20</button>
+                    <button type="button" class="btn btn-default" v-bind:class="{disabled: !betAllowed}" v-on:click="placeBet(25)">25</button>
+                  </div>
+                 <button class="btn btn-primary" v-on:click="dealHand()" v-bind:class="{disabled: disableShuffle}">Shuffle Up and Deal!!</button>&nbsp;&nbsp;
                  <button class="btn btn-primary" v-on:click="drawFromDeck(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
                 <div style="margin-top: 15px; font-weight: 700">
-                 Discard Index: {{discards}} | Cards left: {{deck.length}} |  Draws: {{numberOfDraws}}
+                 Coins bet: {{coins_bet}} | Discard Index: {{discards}} | Cards left: {{deck.length}} |  Draws: {{numberOfDraws}}
                </div>
               </div>
            </div>
@@ -18,22 +25,30 @@
         </div>
 
         <span class="col-md-12 text-center">
-        <span v-for="(card, index) in hand" v-on:click="checkForDiscard(index)" style="display: inline-block;padding-right: 20px;">
-        <span v-if="showDiscardLabel(index)"><span style="background: #000; color: #fff; padding: 8px;">DISCARD</span></span>
-        <br><br><br>
-        <img :src="localImagePath + card.image" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand, handFinished: !startOfHand }">
+        <span v-show="startOfHand" style="display: inline-block;padding-right: 20px;" >
+          <br><br><br>
+          <img :src="localImagePath + 'back2x.png'" height="200" style="margin-right: 20px">
+          <img :src="localImagePath + 'back2x.png'" height="200" style="margin-right: 20px">
+          <img :src="localImagePath + 'back2x.png'" height="200" style="margin-right: 20px">
+          <img :src="localImagePath + 'back2x.png'" height="200" style="margin-right: 20px">
+          <img :src="localImagePath + 'back2x.png'" height="200" style="margin-right: 20px">
+        </span>
+        <span v-show="!startOfHand" v-for="(card, index) in hand" v-on:click="checkForDiscard(index)" style="display: inline-block;padding-right: 20px;" class="" >
+          <span v-if="showDiscardLabel(index)"><span style="background: #000; color: #fff; padding: 8px;">DISCARD</span></span>
+          <br><br><br>
+          <img :src="localImagePath + card.image" height="200" v-bind:class="{discard: showDiscardLabel(index), card: startOfHand, handFinished: !startOfHand }">
         </span>
         <div class="text-center" style="color: #555; margin-top: 30px" v-show="!disableShuffle">Click on cards you want to discard, then click 'DISCARD'.</div>
-        <div style="margin-top: 50px;" v-bind:class="{fadeInLeft: showWinnings(numberOfDraws)}" v-show="numberOfDraws > 1" class="animated text-center">
+        <div style="margin-top: 50px;" v-bind:class="{fadeInLeft: showWinnings(numberOfDraws)}" v-show="showWinnings()" class="animated text-center">
            <h3 style="color: red; font-weight: 900; text-transform: uppercase; ">{{evaluatedHand}}</h3>
-            <button class="btn btn-primary" style="margin-top: 20px;" v-on:click="dealHand()" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>
+            <!-- <button class="btn btn-primary" style="margin-top: 20px;" v-on:click="dealHand()" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button> -->
         </div>
         </span>
         <div>&nbsp;</div>
 
         <div class="well">
            <div style="padding-top: 10px">
-              <div class="text-center" style="font-size: 16px; font-weight: 700; font-size: 24px; text-transform: uppercase">Coins: {{coins}} | Coins bet: {{coins_per_bet}} | Coins won: {{coins_won}}</div>
+              <div class="text-center" style="font-size: 16px; font-weight: 700; font-size: 24px; text-transform: uppercase">Coins: {{coins}} | Coins bet: {{coins_bet}} | Coins won: {{coins_won}}</div>
            </div>
         </div>
 
@@ -49,7 +64,8 @@ export default {
     name: 'Poker',
     mounted: function() {
         this.status.push('App mounted.')
-        this.dealHand()
+        //this.dealHand(5)
+
     },
     methods: {
         getDeck: function() {
@@ -81,8 +97,20 @@ export default {
             }
             console.log('Fisher-Yates shuffle')
         },
-        drawFromDeck: function(cardsToDraw) {
+        placeBet: function (bet) {
+          if (this.betAllowed) {
+          this.coins_won = 0
+          this.coins_bet = bet
+          this.startOfHand = true
+          this.numberOfDraws = 0
+          this.disableShuffle = false
+          console.log('Bet: ',this.coins_bet)
+          console.log('StartOfHand: ',this.startOfHand)
+        }
 
+        },
+        drawFromDeck: function(cardsToDraw) {
+            this.betAllowed = false
             if (this.numberOfDraws <= 1) {
                 console.log('Number of draws: ', this.numberOfDraws)
 
@@ -116,23 +144,23 @@ export default {
             }
         },
         dealHand: function() {
-            if (this.disableShuffle) {
+              if (!this.disableShuffle) {
                 // set game variables
                 const CARDS_TO_DRAW = 5
                 this.deck = []
                 this.discards = []
                 this.numberOfDraws = 0
                 this.coins_won = 0
-                this.startOfHand = true
+                this.startOfHand = false
                 this.disableShuffle = true
-                this.coins = this.coins - this.coins_per_bet
+                this.coins = this.coins - this.coins_bet
                 // start the hand
                 this.getDeck()
                 this.shuffleDeck()
                 this.drawFromDeck(CARDS_TO_DRAW)
-                this.disableShuffle = !this.disableShuffle
+              }
 
-            }
+
         },
 
         evaluateHand: function() {
@@ -217,12 +245,16 @@ export default {
             console.log('Values: ', arrayValues)
             let myHand = rankPokerHand(arrayValues, arraySuits);
             this.evaluatedHand = myHand.evaluatedHand
-            this.coins_won = this.coins_per_bet * myHand.coins_won
+
             if (this.numberOfDraws > 1) {
+                this.coins_won = this.coins_bet * myHand.coins_won
                 this.coins = this.coins + this.coins_won
-                this.disableShuffle = !this.disableShuffle
+                this.betAllowed = true
                 this.handFinished = !this.handFinished;
+
+
             }
+
 
         },
         showWinnings: function() {
@@ -262,6 +294,7 @@ export default {
             status: [],
             deck: [],
             hand: [],
+            coins_bet: 0,
             drawnCards: [],
             localImagePath: '../static/img/',
             discards: [],
@@ -270,10 +303,10 @@ export default {
             cardsLeft: '',
             coins: 1000,
             payout: '',
-            coins_per_bet: 5,
-            coins_won: '',
+            coins_won: 0,
             disableShuffle: true,
             startOfHand: true,
+            betAllowed: true
 
         }
     },
