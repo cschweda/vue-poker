@@ -56,28 +56,19 @@ export default {
     name: 'Poker',
     mounted: function() {
         this.status.push('App mounted.')
-            // shuffle deck
         this.shuffleUpAndDeal(this.DECK_API, 5)
     },
     methods: {
         fyShuffle: function (array) {
-
           var m = array.length, t, i;
-
-          // While there remain elements to shuffle…
           while (m) {
-
-            // Pick a remaining element…
             i = Math.floor(Math.random() * m--);
-
-            // And swap it with the current element.
             t = array[m];
             array[m] = array[i];
             array[i] = t;
           }
           console.log('Fisher-Yates shuffle')
           return array;
-
         },
         shuffleUpAndDeal: function(deck_api, draw) {
           if (this.disableShuffle) {
@@ -85,7 +76,6 @@ export default {
             this.numberOfDraws = 0
             this.startOfHand = true
             this.coins = this.coins - this.coins_per_bet
-
             this.coins_won = 0
             const shuffle_api = deck_api + 'draw/?count=52'
             const CARDS_TO_START = 5
@@ -93,7 +83,6 @@ export default {
             this.axios.get(shuffle_api).then((response) => {
                 this.deck = response.data
                 this.deck = this.fyShuffle(this.deck)
-
                 let msg = 'Shuffled and deck array created.'
                 console.log(msg)
                 this.status.push(msg);
