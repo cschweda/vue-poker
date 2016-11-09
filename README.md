@@ -6,17 +6,19 @@ Key components:
 
 * VueJS (https://vuejs.org/)
 * Vue-cli (https://github.com/vuejs/vue-cli)
-* ~~Axios (https://github.com/mzabriskie/axios)~~ REMOVED
-* ~~Deck of Cards API (https://deckofcardsapi.com/)~~ REMOVED
+* ~~Axios (https://github.com/mzabriskie/axios)~~ **REMOVED**
+* ~~Deck of Cards API (https://deckofcardsapi.com/)~~ **REMOVED**
 * Poker Hand Analyzer (http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math)
 
 TODO:
 
+
+* ~Variable bet sizes~ **ADDED**
+* ~~Fisher-Yates Shuffle Algorithm~~ **ADDED**
 * Session stats
-* Variable bet sizes
 * Custom decks
-* ~~Fisher-Yates Shuffle Algorithm~~ ADDED
 * UI improvements
+
 
 Live demo:
 
