@@ -4,15 +4,13 @@
         <div class="col-md-12">
           <div class="text-center" style="margin-top: 10px">
 
-           <p style="font-weight: 700; margin-bottom: 30px; color: red">Note: Please disable Adblock or Adblock Plus (otherwise Ace of Diamonds -- AD.png -- won't display!)</p>
-
          </div>
            <div class="well" style="margin-bottom: 30px">
               <div style="padding-top: 5px; padding-bottom: 5px;" class="text-center">
                  <button class="btn btn-primary" v-on:click="shuffleUpAndDeal(DECK_API,5)" v-bind:class="{disabled: !disableShuffle}">Shuffle Up and Deal!!</button>&nbsp;&nbsp;
                  <button class="btn btn-primary" v-on:click="draw(discards.length)" v-bind:class="{disabled: showWinnings(numberOfDraws)}">Discard {{discards.length}}</button>
                 <div style="margin-top: 15px; font-weight: 700">
-                 Discard Index: {{discards}} | Cards left: {{cardsLeft}} |  Draws: {{numberOfDraws}}
+                 Discard Index: {{discards}} | Cards left: {{deck.length}} |  Draws: {{numberOfDraws}}
                </div>
               </div>
            </div>
@@ -59,67 +57,82 @@ export default {
         this.shuffleUpAndDeal(this.DECK_API, 5)
     },
     methods: {
-        fyShuffle: function (array) {
-          var m = array.length, t, i;
+        shuffleDeck: function () {
+          var m = this.deck.length, t, i;
           while (m) {
             i = Math.floor(Math.random() * m--);
-            t = array[m];
-            array[m] = array[i];
-            array[i] = t;
+            t = this.deck[m];
+            this.deck[m] = this.deck[i];
+            this.deck[i] = t;
           }
           console.log('Fisher-Yates shuffle')
-          return array;
+        },
+        generateDeck: function () {
+          // let deck = []
+
+          let suits = ['CLUBS','HEARTS','SPADES','DIAMONDS']
+          let values = ['2','3','4','5','6','7','8','9','10','JACK','QUEEN','KING','ACE']
+          for (let s = 0; s < suits.length; s++) {
+            for (let v = 0; v< values.length; v++) {
+              let card = {}
+              card["value"] = values[v]
+              card["suit"] = suits[s]
+              values[v] === '10' ? card["code"] = values[v].charAt(1) + suits[s].charAt(0) : card["code"] = values[v].charAt(0) + suits[s].charAt(0)
+              card["code"] === 'AD' ? card["image"] = 'aceofdiamonds.png' : card["image"] = card["code"] + '.png'
+              this.deck.push(card)
+              }
+            }
+
+            console.log('Deck created')
         },
         shuffleUpAndDeal: function(deck_api, draw) {
           if (this.disableShuffle) {
+            this.deck = []
             this.discards = []
             this.numberOfDraws = 0
-            this.startOfHand = true
-            this.coins = this.coins - this.coins_per_bet
             this.coins_won = 0
-            const shuffle_api = deck_api + 'draw/?count=52'
-            const CARDS_TO_START = 5
+            this.startOfHand = true
             this.disableShuffle = true
-            this.axios.get(shuffle_api).then((response) => {
-                this.deck = response.data
-                this.deck = this.fyShuffle(this.deck)
-                let msg = 'Shuffled and deck array created.'
-                console.log(msg)
-                this.status.push(msg);
-                this.draw(CARDS_TO_START)
-                this.disableShuffle = !this.disableShuffle
-            })
+            this.coins = this.coins - this.coins_per_bet
+            const CARDS_TO_START = 5
+            this.generateDeck()
+            this.shuffleDeck()
+            this.draw(CARDS_TO_START)
+            this.disableShuffle = !this.disableShuffle
+
           }
         },
         draw: function(cardsToDraw) {
 
           if (this.numberOfDraws <= 1) {
             console.log('Number of draws: ', this.numberOfDraws)
-            if (this.deck.cards.length >= cardsToDraw) {
+            if (this.deck.length >= cardsToDraw) {
                 if (this.numberOfDraws === 0) {
                     // Initial phase: Draw 5 cards.
                     console.log('Initial phase: Draw 5 cards')
-                    this.hand = this.deck.cards.slice(0, cardsToDraw)
-                    this.deck.cards.splice(0, cardsToDraw)
+                    this.hand = this.deck.slice(0, cardsToDraw)
+                    this.deck.splice(0, cardsToDraw)
+
                 } else {
                     // Drawing phase: Replace discards with drawn cards
                     console.log('Drawing phase: Replace discards with drawn cards')
-                    this.drawnCards = this.deck.cards.slice(0, cardsToDraw)
+                    this.drawnCards = this.deck.slice(0, cardsToDraw)
                     for (let i = 0; i < this.discards.length; i++) {
                         this.hand[this.discards[i]] = this.drawnCards[i];
                     }
                     // Remove drawn cards from deck
-                    this.deck.cards.splice(0, cardsToDraw)
+                    this.deck.splice(0, cardsToDraw)
                     this.discards = []
                     this.startOfHand = false
+
                 }
             } else {
                 console.log('No more cards to draw.')
             }
-            console.log('Cards left: ', this.deck.cards.length)
+            console.log('Cards left: ', this.deck.length)
             this.numberOfDraws = this.numberOfDraws + 1
             this.evaluate(this.hand)
-            this.cardsLeft = this.deck.cards.length
+
           }
         },
         evaluate: function() {
@@ -250,6 +263,7 @@ export default {
             status: [],
             deck: [],
             hand: [],
+            newDeck: [],
             drawnCards: [],
             localImagePath: '../static/img/',
             localImageExt: '.png',
@@ -257,7 +271,7 @@ export default {
             discards: [],
             numberOfDraws: 0,
             evaluatedHand: '',
-            cardsLeft: '',
+            cardsLeft: 0,
             coins: 1000,
             payout: '',
             coins_per_bet: 5,
