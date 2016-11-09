@@ -6,6 +6,7 @@ Key components:
 
 * VueJS (https://vuejs.org/)
 * Vue-cli (https://github.com/vuejs/vue-cli)
+* Axios (https://github.com/mzabriskie/axios)
 * Deck of Cards API (https://deckofcardsapi.com/)
 * Poker Hand Analyzer (http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math)
 
