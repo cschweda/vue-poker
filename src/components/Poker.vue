@@ -4,7 +4,7 @@
         <div class="col-md-12">
           <div class="text-center" style="margin-top: 10px">
 
-           <p style="font-weight: 700; margin-bottom: 30px; color: red">Note: Please diable Adblock or Adblock Plus (otherwise Ace of Diamonds -- AD.png -- won't display!)</p>
+           <p style="font-weight: 700; margin-bottom: 30px; color: red">Note: Please disable Adblock or Adblock Plus (otherwise Ace of Diamonds -- AD.png -- won't display!)</p>
 
          </div>
            <div class="well" style="margin-bottom: 30px">
