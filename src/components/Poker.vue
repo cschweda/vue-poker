@@ -236,6 +236,9 @@ export default {
                 v -= (ss[0] == (ss[1] | ss[2] | ss[3] | ss[4])) * ((s == 0x7c00) ? -5 : 1);
                 //console.log("Hand: " + hands[v] + (s == 0x403c ? " (Ace low)" : "") + "<br/>");
                 let evaluatedHand = hands[v] + (s == 0x403c ? " (Ace low)" : "");
+
+
+                console.log('Evaluation s:',s.toString(16),' v: ',v)
                 console.log('Payout: ', payout[v])
                 return {
                     evaluatedHand: evaluatedHand,
@@ -252,6 +255,23 @@ export default {
             console.log('Suits: ', arraySuits)
             console.log('Values: ', arrayValues)
             let myHand = rankPokerHand(arrayValues, arraySuits);
+            console.log('myHand.evaluatedHand',myHand.evaluatedHand)
+            // intercept jacks or better pair
+            if (myHand.evaluatedHand === '1 Pair') {
+                var jacksOrBetter = arrayValues.filter(function(value){
+                  // how many cards above 10 in value?
+                  return value > 10;
+                }).length
+                // if it's at least 2 cards and a pair, then it's jacks or better
+                if (jacksOrBetter > 1) {
+                  myHand.evaluatedHand = myHand.evaluatedHand + ' (Jacks or better)'
+                } else {
+                  // otherwise low pair. Reset coins_won to 0 (from 1)
+                  myHand.evaluatedHand = 'Low pair'
+                  myHand.coins_won = 0
+                }
+            }
+
             this.evaluatedHand = myHand.evaluatedHand
 
             if (this.numberOfDraws > 1) {
