@@ -1,6 +1,6 @@
 <template>
   <div class="poker">
-     <div class="container">
+     <div class="container-fluid">
         <div class="col-md-12">
           <div class="text-center" style="margin-top: 10px">
 
