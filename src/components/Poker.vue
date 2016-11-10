@@ -258,11 +258,11 @@ export default {
             console.log('myHand.evaluatedHand',myHand.evaluatedHand)
             // intercept jacks or better pair
             if (myHand.evaluatedHand === '1 Pair') {
-                var jacksOrBetter = arrayValues.filter(function(value){
+                let jacksOrBetter = arrayValues.filter(function(value){
                   // how many cards above 10 in value?
                   return value > 10;
                 }).length
-                // if it's at least 2 cards and a pair, then it's jacks or better
+                // if it's at least 2 cards, then it's jacks or better
                 if (jacksOrBetter > 1) {
                   myHand.evaluatedHand = myHand.evaluatedHand + ' (Jacks or better)'
                 } else {
@@ -318,7 +318,6 @@ export default {
     },
     data() {
         return {
-            DECK_API: 'https://deckofcardsapi.com/api/deck/new/',
             status: [],
             deck: [],
             hand: [],
