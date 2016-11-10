@@ -66,6 +66,12 @@ var webpackConfig = merge(baseWebpackConfig, {
        { from: 'index.php', to: './' },
    ]),
 
+
+   // Required for Netlify deployment
+   new CopyWebpackPlugin([
+       { from: '_redirects', to: './' },
+   ]),
+
     new webpack.optimize.OccurenceOrderPlugin(),
     // extract css into its own file
     new ExtractTextPlugin(utils.assetsPath('css/[name].[contenthash].css')),
