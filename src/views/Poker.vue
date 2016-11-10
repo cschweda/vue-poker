@@ -276,6 +276,8 @@ export default {
                 }
             }
 
+
+
             this.evaluatedHand = myHand.evaluatedHand
 
             if (this.numberOfDraws > 1) {
@@ -284,6 +286,15 @@ export default {
                 this.betAllowed = true
                 this.handFinished = !this.handFinished;
                 this.$store.dispatch('incrementHandcount')
+
+                // update handstats
+                let statPayload = {}
+                statPayload.id = this.$store.state.handCount
+                statPayload.evaluatedHand = myHand.evaluatedHand
+                statPayload.coins_won = this.coins_won
+                this.$store.dispatch('incrementStats', statPayload)
+
+
             }
 
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <payouts></payouts>
+
       <stats></stats>
     </div>
   </div>
@@ -9,7 +9,7 @@
 
 <script>
 import Stats from '../components/Stats.vue'
-import Payouts from '../components/Payouts.vue'
+
 export default {
 
   name: 'Data',
@@ -18,7 +18,7 @@ export default {
   },
   components: {
     Stats,
-    Payouts
+
   },
   data () {
     return {
