@@ -65,8 +65,11 @@
 export default {
     name: 'Poker',
     mounted: function() {
-        this.status.push('App mounted.')
+    this.status.push('App mounted.')
             //this.dealHand(5)
+
+    this.$emit('mounted')
+    console.log('Event fired.')
 
     },
     methods: {
@@ -282,6 +285,8 @@ export default {
 
 
             }
+
+          
 
 
         },

@@ -9,14 +9,14 @@ Vue.use(VueRouter)
 
 
 const router = new VueRouter({
-    // mode: 'history',
+    mode: 'history',
     linkActiveClass: "active",
     base: __dirname,
     routes: routes
 })
 
 /* eslint-disable no-new */
-new Vue({
+let vm = new Vue({
   router,
   el: '#app',
   template: '<App/>',

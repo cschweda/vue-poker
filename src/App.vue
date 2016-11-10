@@ -23,6 +23,7 @@ export default {
   },
   mounted: function () {
     console.info('App mounted.')
+    
   }
 }
 </script>

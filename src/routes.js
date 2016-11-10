@@ -1,19 +1,20 @@
 export default [{
-    path: '/home',
+    path: '/',
+    name: 'Home',
     component: require('./views/Poker.vue'),
 
 }, {
     path: '/about',
+    name: 'About',
     component: require('./views/About.vue'),
 
 },{
-    path: '/payout',
-    component: require('./views/Payout.vue'),
+    path: '/data',
+    name: 'Data',
+    component: require('./views/Data.vue'),
 
-}, {
-    path: '/',
-    redirect: '/home',
-}, {
-    path: '/*',
-    redirect: '/home',
-}, ];
+},
+
+{
+  path: '/*', redirect: '/'
+}];
