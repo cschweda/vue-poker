@@ -1,17 +1,24 @@
 <template>
   <div>
-  <h1>List payouts here</h1>
-  <stats></stats>
-</div>
+    <div class="container">
+      <payouts></payouts>
+      <stats></stats>
+    </div>
+  </div>
 </template>
 
 <script>
 import Stats from '../components/Stats.vue'
+import Payouts from '../components/Payouts.vue'
 export default {
 
   name: 'Data',
+  mounted: function () {
+    console.log()
+  },
   components: {
-    Stats
+    Stats,
+    Payouts
   },
   data () {
     return {

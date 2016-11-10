@@ -5,6 +5,7 @@
     <router-view class="view"></router-view>
   </keep-alive>
   </div>
+
 </template>
 
 <script>
@@ -23,7 +24,7 @@ export default {
   },
   mounted: function () {
     console.info('App mounted.')
-    
+
   }
 }
 </script>

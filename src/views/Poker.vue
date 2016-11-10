@@ -259,6 +259,7 @@ export default {
             console.log('Values: ', arrayValues)
             let myHand = rankPokerHand(arrayValues, arraySuits);
             console.log('myHand.evaluatedHand',myHand.evaluatedHand)
+
             // intercept jacks or better pair
             if (myHand.evaluatedHand === '1 Pair') {
                 let jacksOrBetter = arrayValues.filter(function(value){
@@ -282,11 +283,10 @@ export default {
                 this.coins = this.coins + this.coins_won
                 this.betAllowed = true
                 this.handFinished = !this.handFinished;
-
-
+                this.$store.dispatch('incrementHandcount')
             }
 
-          
+
 
 
         },
