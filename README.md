@@ -1,12 +1,13 @@
-# Video Poker Demo with VueJS
+# Video Poker Demo with Vue.js
 
 > A Vue.js project
 
 Key components:
 
-* VueJS (https://vuejs.org/)
+* Vue.js (https://vuejs.org/)
 * Vue-cli (https://github.com/vuejs/vue-cli)
 * Vue-router (https://github.com/vuejs/vue-router)
+* Vuex 2.0 (https://github.com/vuejs/vuex)
 * ~~Axios (https://github.com/mzabriskie/axios)~~ **REMOVED**
 * ~~Deck of Cards API (https://deckofcardsapi.com/)~~ **REMOVED**
 * Poker Hand Analyzer (http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math)

@@ -292,6 +292,7 @@ export default {
                 statPayload.id = this.$store.state.handCount
                 statPayload.evaluatedHand = myHand.evaluatedHand
                 statPayload.coins_won = this.coins_won
+
                 this.$store.dispatch('incrementStats', statPayload)
 
 
