@@ -19,7 +19,7 @@
           <li><router-link to="/data">Session Data</router-link></li>
           <li><router-link to="/about">About</router-link></li>
 
-
+          </ul>
 
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -29,8 +29,7 @@
 </template>
 
 <script>
-
-export default {
-  name: 'Navbar',
-}
+    export default {
+        name: 'Navbar',
+    }
 </script>

@@ -24,7 +24,7 @@ TODO:
 
 Live demo:
 
-http://car-park-attendant-semiconductor-67625.netlify.com/
+https://poker.metaincognita.com/
 
 
 ## Build Setup
@@ -40,4 +40,3 @@ npm run dev
 npm run build
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

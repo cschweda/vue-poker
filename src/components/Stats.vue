@@ -26,21 +26,19 @@
 
 
   </div>
+</div>
 </template>
 
 
 <script>
-
-export default {
-  name: 'Stats',
-}
+    export default {
+        name: 'Stats',
+    }
 </script>
 
 <style>
-.center-div
-{
-     margin: 0 auto;
-     width: 50%;
-}
-
+    .center-div {
+        margin: 0 auto;
+        width: 50%;
+    }
 </style>
